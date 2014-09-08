@@ -3,4 +3,4 @@ WeCrowd-PHP
 
 Welcome to WeCrowd! 
 
-The purpose of this project is to implement whitelabeling with different brands by changing the configuration file. 
+This project demostrates how to build a simple crowdfunding marketplace using the WePay API to process payments.
