@@ -5,7 +5,7 @@ class Controller_User extends Controller_Base {
 	public function action_index() {
 		if (Auth::instance()->logged_in()){
 			$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 			$this->template->content = View::factory('user/account');
 			if (!($campaign->hasAccessToken())) {
 				$this->template->content->wepay = "<b>Please confirm your account to manage your money: <p><a class='wepay-widget-button wepay-blue' href=" . URL::base() . "wepayapi>Click here to receive confirmation email!</a>";
@@ -22,7 +22,7 @@ class Controller_User extends Controller_Base {
 			$this->template->content->email = $campaign->email;
 			$this->template->content->campaign_name = $campaign->campaign_name;
 			$this->template->content->description = $campaign->description;
-			$this->template->content->price = number_format($campaign->price,2);
+			$this->template->content->default_donation = number_format($campaign->default_donation,2);
 			$this->template->content->edit = true;
 			$this->template->content->wepay_link = 'https://stage.wepay.com/account/' . $campaign->wepay_account_id;
 			$this->template->content->account_id = Request::current()->param('id');
@@ -59,8 +59,8 @@ class Controller_User extends Controller_Base {
             ->rule('password', 'min_length', array(':value', 6))
             ->rule('email', 'not_empty')
             ->rule('email', 'email')
-            ->rule('price', 'numeric')
-            ->rule('price', 'not_empty')
+            ->rule('default_donation', 'numeric')
+            ->rule('default_donation', 'not_empty')
             ->rule('campaign_name', 'not_empty');
 
         // Validation check
@@ -85,13 +85,13 @@ class Controller_User extends Controller_Base {
         }
 
         // Create Campaign
-		$campaign = ORM::factory('campaign');
+		$campaign = ORM::factory('Campaign');
 		$campaign->first_name = $_POST['first_name'];
 		$campaign->last_name = $_POST['last_name'];
 		$campaign->email = $_POST['email'];
 		$campaign->campaign_name = $_POST['campaign_name'];
 		$campaign->description = $_POST['description'];
-		$campaign->price = $_POST['price'];
+		$campaign->default_donation = $_POST['default_donation'];
 		$campaign->account_type = $_POST['account_type'];
 
         // Add login role
@@ -119,7 +119,7 @@ class Controller_User extends Controller_Base {
 		if (!isset($id)) {
 			HTTP::redirect('/');
 		}
-		$campaign = ORM::factory('campaign')->where('id', '=', $id)->find();
+		$campaign = ORM::factory('Campaign')->where('id', '=', $id)->find();
 		$this->template->content = View::factory('user/account');
 
 		if (Auth::instance()->logged_in()) {
@@ -164,7 +164,7 @@ class Controller_User extends Controller_Base {
 		$this->template->content->email = $campaign->email;
 		$this->template->content->description = $campaign->description;
 		$this->template->content->campaign_name = $campaign->campaign_name;
-		$this->template->content->price = number_format($campaign->price,2);
+		$this->template->content->default_donation = number_format($campaign->default_donation,2);
 		$this->template->content->base = URL::base($this->request);
 		$this->template->content->wepay_link = 'https://stage.wepay.com/account/' . $campaign->wepay_account_id;
 		$this->template->content->account_id = Request::current()->param('id');
@@ -173,7 +173,7 @@ class Controller_User extends Controller_Base {
 	public function action_account_summary() {
 		if (Auth::instance()->logged_in()){
 			$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 			HTTP::redirect(URL::base() . 'user/account/' . $campaign->id);
 		} else {
 			$this->template->content = "Not logged in!";
@@ -188,7 +188,7 @@ class Controller_User extends Controller_Base {
 
 		$credit_card_id = $_POST['credit_card_id'];
 		$id = $_POST['account_id'];		
-       	$campaign = ORM::factory('campaign')->where('id', '=', $id)->find();
+       	$campaign = ORM::factory('Campaign')->where('id', '=', $id)->find();
        	$redirect = URL::base() . '/user/payment_success?account_id=' . $id;
        	$code = 302;
 
@@ -203,14 +203,14 @@ class Controller_User extends Controller_Base {
 
     public function action_payment_success() { 
     	$id = $_GET['account_id'];
-    	$campaign = ORM::factory('campaign')->where('id', '=', $id)->find();
+    	$campaign = ORM::factory('Campaign')->where('id', '=', $id)->find();
 
         $this->template->content = View::factory('user/charge_cc');
 		$this->template->content->name = $campaign->first_name;
 		$this->template->content->email = $campaign->email;
 		$this->template->content->description = $campaign->description;
 		$this->template->content->campaign_name = $campaign->campaign_name;
-		$this->template->content->price = number_format($campaign->price,2);
+		$this->template->content->default_donation = number_format($campaign->default_donation,2);
 	}
 
 
@@ -227,7 +227,7 @@ class Controller_User extends Controller_Base {
 		if (Auth::instance()->logged_in()){
 			//$this->template->content->demo = $_GET['demo'];
 			$user = Auth::instance()->get_user();
-	        $campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+	        $campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 	        try  {
 	        	$manage_uri = Controller_Wepayapi::create_manage($campaign->wepay_account_id);
 	        } catch (WePayPermissionException $e) {
@@ -250,8 +250,8 @@ class Controller_User extends Controller_Base {
             ->rule('password', 'min_length', array(':value', 6))
             ->rule('email', 'not_empty')
             ->rule('email', 'email')
-            ->rule('price', 'numeric')
-            ->rule('price', 'not_empty')
+            ->rule('default_donation', 'numeric')
+            ->rule('default_donation', 'not_empty')
             ->rule('campaign_name', 'not_empty');
 
         // Validation check
@@ -275,13 +275,13 @@ class Controller_User extends Controller_Base {
         }
 
         // Create Campaign
-		$campaign = ORM::factory('campaign');
+		$campaign = ORM::factory('Campaign');
 		$campaign->first_name = $_POST['first_name'];
 		$campaign->last_name = $_POST['last_name'];
 		$campaign->email = $_POST['email'];
 		$campaign->campaign_name = $_POST['campaign_name'];
 		$campaign->description = $_POST['description'];
-		$campaign->price = $_POST['price'];
+		$campaign->default_donation = $_POST['default_donation'];
 		$campaign->account_type = $_POST['account_type'];
 
         // Add login role
@@ -349,14 +349,14 @@ class Controller_User extends Controller_Base {
 	public function action_edit(){
 		if (Auth::instance()->logged_in()){
 			$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 			$this->template->content = View::factory('user/edit');
 			$this->template->content->name = $campaign->first_name;
 			$this->template->content->name = $campaign->last_name;
 			$this->template->content->email = $campaign->email;
 			$this->template->content->description = $campaign->description;
 			$this->template->content->campaign_name = $campaign->campaign_name;
-			$this->template->content->price = $campaign->price;
+			$this->template->content->default_donation = $campaign->default_donation;
 		}
 		else{
 			$this->template->content = "Error, you're not logged in!";
@@ -367,14 +367,14 @@ class Controller_User extends Controller_Base {
 		if (Auth::instance()->logged_in()){
 			$this->template->content = "Delete? Really?";
 			$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 			if (!($user->login_role == 'admin')) {
 			    Auth::instance()->logout();
 	            $campaign->delete();
 	            $user->delete();
 			    HTTP::redirect('/');
 			} else {
-				$campaign = ORM::factory('campaign')->where('id', '=', $_GET['account_id'])->find();
+				$campaign = ORM::factory('Campaign')->where('id', '=', $_GET['account_id'])->find();
 				$user = ORM::factory('user')->where('email', '=', $campaign->email)->find();
 				$campaign->delete();
 				$user->delete();
@@ -390,7 +390,7 @@ class Controller_User extends Controller_Base {
     public function action_resend_email() {
     	if (Auth::instance()->logged_in()) {
     		$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
     		Controller_Wepayapi::resend_email($campaign);
     		$this->template->content = "Thanks! Please check your email to finish registering.";
     	}
@@ -405,8 +405,8 @@ class Controller_User extends Controller_Base {
             ->rule('name', 'not_empty')
             ->rule('email', 'not_empty')
             ->rule('email', 'email')
-            ->rule('price', 'numeric')
-            ->rule('price', 'not_empty')
+            ->rule('default_donation', 'numeric')
+            ->rule('default_donation', 'not_empty')
             ->rule('kitchen', 'not_empty')
             ->rule('campaign_name', 'not_empty');
 		} catch (Validation_Exception $e) {
@@ -415,10 +415,10 @@ class Controller_User extends Controller_Base {
 
 		if (Auth::instance()->logged_in()){
 			$user = Auth::instance()->get_user();
-			$campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+			$campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
 			$campaign->campaign_name = $_POST['campaign_name'];
 			$campaign->kitchen = $_POST['kitchen'];
-			$campaign->price = $_POST['price'];
+			$campaign->default_donation = $_POST['default_donation'];
 			$campaign->save();
 
 			HTTP::redirect('user');

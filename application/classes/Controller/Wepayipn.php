@@ -7,7 +7,7 @@ class Controller_Wepayipn extends Controller_Base {
 				$account_id= $_POST['account_id'];
 		}
         $config = Kohana::$config->load('wepay');
-        $campaign = ORM::factory('campaign')->where('wepay_account_id', '=', $account_id)->find();
+        $campaign = ORM::factory('Campaign')->where('wepay_account_id', '=', $account_id)->find();
         $wepay = new WePay($campaign->getAccessToken());
         	try {
            		 $response = $wepay->request('account', array(

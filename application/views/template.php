@@ -23,7 +23,7 @@
                 echo '<td><a href='.'user/account/'.$campaign->id.'>'.$campaign->first_name.'</td>';
                 echo '<td><a href='.'user/account/'.$campaign->id.'>'.$campaign->campaign_name.'</td>';
                 echo '<td>'.$campaign->description.'</td>';
-                echo '<td>$'.number_format($campaign->price,2).'</td>';
+                echo '<td>$'.number_format($campaign->default_donation, 2).'</td>';
             }
 
             echo '</table>' . '</div>';

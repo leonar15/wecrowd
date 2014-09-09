@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `wecrowd`;
+USE `wecrowd`;
+
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
@@ -6,8 +9,11 @@ CREATE TABLE IF NOT EXISTS `roles` (
   UNIQUE KEY `uniq_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-INSERT INTO `roles` (`id`, `name`, `description`) VALUES(1, 'login', 'Login privileges, granted after account confirmation');
-INSERT INTO `roles` (`id`, `name`, `description`) VALUES(2, 'admin', 'Administrative user, has access to everything.');
+INSERT INTO `roles` (`id`, `name`, `description`)
+  VALUES
+    (1, 'login', 'Login privileges, granted after account confirmation'),
+    (2, 'admin', 'Administrative user, has access to everything.')
+;
 
 CREATE TABLE IF NOT EXISTS `roles_users` (
   `user_id` int(10) UNSIGNED NOT NULL,
@@ -23,7 +29,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(64) NOT NULL,
   `logins` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `last_login` int(10) UNSIGNED,
-  PRIMARY KEY  (`id`),
+  `created` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Unix timestamp',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -33,33 +40,30 @@ CREATE TABLE IF NOT EXISTS `user_tokens` (
   `user_id` int(11) UNSIGNED NOT NULL,
   `user_agent` varchar(40) NOT NULL,
   `token` varchar(40) NOT NULL,
-  `created` int(10) UNSIGNED NOT NULL,
-  `expires` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY  (`id`),
+  `created` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Unix timestamp',
+  `expires` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Unix timestamp',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_token` (`token`),
   KEY `fk_user_id` (`user_id`),
   KEY `expires` (`expires`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-ALTER TABLE `roles_users`
-  ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
-
-ALTER TABLE `user_tokens`
-  ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
 CREATE TABLE `campaigns` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
-  `email` text NOT NULL,
-  `campaign_name` text,
+  `first_name`varchar(255) NOT NULL,
+  `last_name`varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `campaign_name` varchar(255),
   `description` text,
-  `price` int(11) DEFAULT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '',
   `wepay_access_token` text,
   `wepay_account_id` bigint(20) DEFAULT NULL,
-  `account_type` text,
-  `state` text, DEFAULT 'pending',
-  `balance` int(11) DEFAULT NULL,
+  `account_type` int(3) default 0,
+  `state` varchar(255) DEFAULT 'pending',
+  `default_donation` int(11) DEFAULT NULL,
+  `total_goal` int(11) DEFAULT NULL,
+  `total_raised` int(11) DEFAULT NULL,
+  `currency` char(3) NOT NULL DEFAULT 'XXX',
+  `created` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Unix timestamp',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;

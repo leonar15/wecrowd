@@ -27,7 +27,7 @@
 
 		<p>
 		<b><font color="7acaea">Donation:</font></b>
-		<? echo '$'.$price; ?>
+		<? echo '$'.$default_donation; ?>
 		</p>
 		<p><p>
 	<? if ($edit) {

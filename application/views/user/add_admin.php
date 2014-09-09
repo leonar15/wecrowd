@@ -24,8 +24,8 @@
 
     <div id="registration_wrap" class="field" >
       <div id="step3">
-        <label for="campaign_price">Donation Price</label>
-        <?php echo Form::input('price','',array('id' => 'price')) ?>
+        <label for="default_donation">Default Donation</label>
+        <?php echo Form::input('default_donation','',array('id' => 'default_donation')) ?>
 
         <label for="campaign_email">Email</label>
         <?php echo Form::input('email','',array('id' => 'email')) ?>

@@ -20,8 +20,8 @@
     <?php echo form::input('description',$description,array('id' => 'description')) ?>
   </div>
   <div class="field">
-    <label for="campaign_price">Donation Price</label>
-    <?php echo form::input('price',$price,array('id' => 'price')) ?>
+    <label for="default_donation">Default Donation</label>
+    <?php echo form::input('default_donation',$default_donation,array('id' => 'default_donation')) ?>
   </div>
   <div class="actions">
     <?php echo form::submit('submit','Update WeCrowd Account') ?>

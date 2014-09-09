@@ -7,7 +7,7 @@ class Controller_Wepayapi extends Controller_Base {
             $config = Kohana::$config->load('wepay');
 
             $user = Auth::instance()->get_user();
-            $campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+            $campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
             $base_url = URL::site(NULL, TRUE);
             $demo = $_GET['demo'];
      
@@ -33,10 +33,10 @@ class Controller_Wepayapi extends Controller_Base {
                 $this->template->content = "Thank you! Please check your email to finish registering! <a href=\"" . URL::base() . "\">Back</a>";
                 $resend_email = new WePay($campaign->getAccessToken());    
                 $resend_email->request('user/resend_confirmation/', array());
-                } else {
-                    $this->template->content = "WeCrowd Account Failed! <a href=\"" . URL::base() . "\">Back</a>";
-                }
             } else {
+                $this->template->content = "WeCrowd Account Failed! <a href=\"" . URL::base() . "\">Back</a>";
+            }
+        } else {
             $this->template->content = "Not Logged In";
         }
     }
@@ -44,7 +44,7 @@ class Controller_Wepayapi extends Controller_Base {
     public static function create_manage($account_id) {
         $config = Kohana::$config->load('wepay');
         $user = Auth::instance()->get_user();
-        $campaign = ORM::factory('campaign')->where('email', '=', $user->email)->find();
+        $campaign = ORM::factory('Campaign')->where('email', '=', $user->email)->find();
         $base_url = URL::site(NULL, TRUE);
         $wepay = new WePay($campaign->getAccessToken());  
         $response = $wepay->request('account/get_update_uri/', array(
@@ -63,7 +63,7 @@ class Controller_Wepayapi extends Controller_Base {
                     'account_id'          => $merchant->getAccountId(),
                     'short_description'   => "Donating to ".$merchant->first_name." for ".$merchant->campaign_name.".",
                     'type'                => 'goods',
-                    'amount'              => $merchant->price,
+                    'amount'              => $merchant->default_donation,
                     'payment_method_id'   => $credit_card_id,
                     'payment_method_type' => 'credit_card'
                     ));
