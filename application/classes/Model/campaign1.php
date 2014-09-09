@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Model that represents a farmer in WeFarm
+ * Model that represents a donation campaign in WeCrowd
  *
  */
-class Model_campaign extends ORM {
+class Model_Campaign extends ORM {
 
     public function createAccount($access_token) {
         $wepay = new WePay($access_token);
@@ -16,7 +16,7 @@ class Model_campaign extends ORM {
                     'country'       => "US",
                     'currencies'    => array("USD"),
                     'type'          => $this->account_type,
-                    'callback_uri'  => URL::site(NULL, TRUE) . 'wepayipn/' 
+                    'callback_uri'  => URL::site(null, true) . 'wepayipn/' 
                     ));
         }
         catch (Exception $e) {
