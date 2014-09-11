@@ -61,7 +61,7 @@ class Controller_Wepayapi extends Controller_Template {
         $wepay = new WePay($merchant->getAccessToken());
         $response = $wepay->request('checkout/create/', array(
                     'account_id'          => $merchant->getAccountId(),
-                    'short_description'   => "Donating to ".$merchant->first_name." for ".$merchant->campaign_name.".",
+                    'short_description'   => "Donating to ".$merchant->first_name." for ".$merchant->name.".",
                     'type'                => 'goods',
                     'amount'              => $merchant->default_donation,
                     'payment_method_id'   => $credit_card_id,

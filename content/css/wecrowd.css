@@ -103,3 +103,23 @@ a.btn-demo-launch {
    margin-top:22rem;
    color:gray;
 }
+
+.campaigns .campaign {
+    float: left;
+    display: inline-block;
+    border: 1px solid #aaa;
+    padding: 5px;
+    width: 33%;
+    margin: 0px 5px 5px 0px;
+}
+.campaigns .campaign a {
+    text-decoration: none;
+}
+.campaigns .campaign .campaign-name {
+    font-size: 140%;
+    margin-bottom: 10px;
+    color: #555;
+}
+.campaigns .campaign .description {
+    color: #aaa;
+}

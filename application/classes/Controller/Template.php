@@ -28,7 +28,7 @@ class Controller_Template extends Kohana_Controller_Template {
         if ($this->view_file) {
             $this->template->content = View::factory($this->view_file, $this->vars);
 	    } else {
-            $this->template->content->set($this->vars);
+            $this->template->set($this->vars);
 	    }
 
         $this->template->header = View::factory($this->header_file, $this->vars);

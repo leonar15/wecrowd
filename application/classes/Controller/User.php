@@ -374,7 +374,7 @@ class Controller_User extends Controller_Template {
 	            $user->delete();
 			    HTTP::redirect('/');
 			} else {
-				$campaign = ORM::factory('Campaign')->where('id', '=', $_GET['account_id'])->find();
+				$campaign = ORM::factory('Campaign', $_GET['account_id'])->find();
 				$user = ORM::factory('user')->where('email', '=', $campaign->email)->find();
 				$campaign->delete();
 				$user->delete();

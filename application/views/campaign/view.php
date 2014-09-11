@@ -22,12 +22,16 @@
     	</p>
     
     	<p>
-    		<b><font color="7acaea">Donation:</font></b>
+    		<b><font color="7acaea">Suggested Donation:</font></b>
     		$<?=$campaign->default_donation?>
+    	</p>
+    	<p>
+    		<b><font color="7acaea">Goal:</font></b>
+    		$<?=$campaign->total_goal?>
     	</p>
     	<p><p>
     <? if ($edit): ?>
-        <a id="delete" href="/user/delete?account_id=<?=$account_id?>">Delete</a>
+        <a id="delete" href="/user/delete?account_id=<?=$campaign->id?>">Delete</a>
         <br />
         <h1>Checkouts</h1>
     <? endif ?>

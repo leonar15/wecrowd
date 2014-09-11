@@ -19,9 +19,10 @@ return array
 			 * Ports and sockets may be appended to the hostname.
 			 */
 			'hostname'   => 'localhost',
-			'database'   => 'freshcook',
+			'database'   => 'wecrowd',
 			'username'   => 'root',
-			'password'   => FALSE,
+			'pass'       => 'secret123',
+//			'password'   => FALSE,
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
