@@ -25,13 +25,13 @@ CREATE TABLE IF NOT EXISTS `roles_users` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(254) NOT NULL,
-  `username` varchar(32) NOT NULL DEFAULT '',
+  `first_name` varchar(32) NOT NULL DEFAULT '',
+  `last_name` varchar(32) NOT NULL DEFAULT '',
   `password` varchar(64) NOT NULL,
   `logins` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `last_login` int(10) UNSIGNED,
   `created` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Unix timestamp',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
