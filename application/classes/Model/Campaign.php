@@ -6,6 +6,9 @@
  */
 class Model_Campaign extends ORM {
 
+    public static function getFeatured() {
+        return ORM::factory('Campaign')->find_all();
+    }
     public function createAccount($access_token) {
         $wepay = new WePay($access_token);
 
@@ -77,5 +80,9 @@ class Model_Campaign extends ORM {
         if (isset($this->state)) {
             return $this->state;
         }
+    }
+    
+    public function getUri() {
+        return '/campaign/' . $this->id;
     }
 }
