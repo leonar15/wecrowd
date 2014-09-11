@@ -6,18 +6,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="/"><img src="http://www.wecrowd.wepay-inc.com/content/img/wecrowd_logo_small.png"></a>
+          <a class="brand" href="/"><img src="/content/img/wecrowd_logo_small.png"></a>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li class="active"><a href="<? echo url::base().'user/register?demo=false' ?>"
+              <li class="active">
+                  <a href="/campaign/new?demo=false"
                   style = "border-style: solid;
                            border-left: 0;
                            border-top: 0;
                            border-bottom: 0;
                            border-right-color: #DADADA; 
                            z-index:999999;
-                ">REGISTER</a></li>
-              <li><a href="<? echo url::base().'user/login' ?>">LOGIN</a></li>
+                ">Create Campaign</a></li>
+              <li><a href="<? echo url::base().'user/login' ?>">Login</a></li>
             </ul>
           </div>
         </div>
