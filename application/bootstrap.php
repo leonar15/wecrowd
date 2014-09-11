@@ -123,21 +123,29 @@ Kohana::modules(array(
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
+Route::set('user', 'user(/(/))')
 	->defaults(array(
-		'controller' => 'home',
+		'controller' => 'User',
 		'action'     => 'index',
 	));
 
-Route::set('user', 'user(/(/))')
+Route::set('campaigns', 'campaign/<campaign_id>', array(
+        'campaign_id' => '[0-9]+'
+    ))
 	->defaults(array(
-		'controller' => 'user',
-		'action'     => 'index',
+		'controller' => 'Campaign',
+		'action'     => 'view',
 	));
 
 Route::set('wepayapi', 'wepayapi(/<action>(/<id>))')
 	->defaults(array(
-		'controller' => 'wepayapi',
+		'controller' => 'Wepayapi',
+		'action'     => 'index',
+	));
+
+Route::set('default', '(<controller>(/<action>(/<id>)))')
+	->defaults(array(
+		'controller' => 'Welcome',
 		'action'     => 'index',
 	));
 
