@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Wepayapi extends Controller_Base {
+class Controller_Wepayapi extends Controller_Template {
 
     public function action_index() {
         if (Auth::instance()->logged_in()) {
