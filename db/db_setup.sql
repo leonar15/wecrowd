@@ -53,7 +53,7 @@ CREATE TABLE `campaigns` (
   `first_name`varchar(255) NOT NULL,
   `last_name`varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `campaign_name` varchar(255),
+  `name` varchar(255),
   `description` text,
   `image` varchar(255) NOT NULL DEFAULT '',
   `wepay_access_token` text,
